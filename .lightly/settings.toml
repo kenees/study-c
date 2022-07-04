@@ -1,5 +1,6 @@
 ports = []
 [languages.cpp]
 language = "cpp"
-
-[languages.cpp.run]
+[languages.cpp.run."main.cpp"]
+name = "main.cpp"
+path = "/workspace/study-c/02-枚举-typedef/main.cpp"
