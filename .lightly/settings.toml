@@ -3,4 +3,8 @@ ports = []
 language = "cpp"
 [languages.cpp.run."main.cpp"]
 name = "main.cpp"
-path = "/workspace/study-c/02-枚举-typedef/main.cpp"
+path = "/workspace/study-c/03-数据类型/main.cpp"
+
+[languages.cpp.run."man.cpp"]
+name = "man.cpp"
+path = "/workspace/study-c/04-数据输入/man.cpp"
