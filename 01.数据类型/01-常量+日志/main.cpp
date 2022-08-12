@@ -34,5 +34,7 @@ int main()
 
     cout << "a week have " << MONTH << " day" << endl;
 
+    printf("abcd");
+
     return 0;
 }

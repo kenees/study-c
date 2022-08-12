@@ -1,10 +1,18 @@
 ports = []
 [languages.cpp]
 language = "cpp"
-[languages.cpp.run."main.cpp"]
-name = "main.cpp"
-path = "/workspace/study-c/03-数据类型/main.cpp"
+[languages.cpp.run."9.成员函数做友元.cpp"]
+name = "9.成员函数做友元.cpp"
+path = "/workspace/study-c/12.类和对象/9.成员函数做友元.cpp"
 
-[languages.cpp.run."man.cpp"]
-name = "man.cpp"
-path = "/workspace/study-c/04-数据输入/man.cpp"
+[languages.cpp.run."8.类做友元.cpp"]
+name = "8.类做友元.cpp"
+path = "/workspace/study-c/12.类和对象/8.类做友元.cpp"
+
+[languages.cpp.run."7.友元.cpp"]
+name = "7.友元.cpp"
+path = "/workspace/study-c/12.类和对象/7.友元.cpp"
+
+[languages.cpp.run."10.运算符重载.cpp"]
+name = "10.运算符重载.cpp"
+path = "/workspace/study-c/12.类和对象/10.运算符重载.cpp"

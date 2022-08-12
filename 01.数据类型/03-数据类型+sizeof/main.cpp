@@ -47,11 +47,9 @@ int main() {
   string str2 = "chengcheng";
   cout << "c++类型字符串:" << str2 << endl;
 
-
-// 布尔类型. 1个字节
-bool flag = true;
-cout << flag << endl;
-
+  // 布尔类型. 1个字节
+  bool flag = true;
+  cout << flag << endl;
 
   return 0;
 }
