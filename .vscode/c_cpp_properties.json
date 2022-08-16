@@ -1,15 +1,20 @@
 {
     "configurations": [
         {
-            "name": "Linux",
+            "name": "Win64",//vscode右下角显示
             "includePath": [
                 "${workspaceFolder}/**"
             ],
-            "defines": [],
-            "compilerPath": "/usr/bin/gcc",
-            "cStandard": "gnu17",
-            "cppStandard": "gnu++14",
-            "intelliSenseMode": "linux-gcc-x64"
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.18362.0",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "compilerPath": "C:/MinGW/bin/g++.exe"
+           
         }
     ],
     "version": 4
