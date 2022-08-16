@@ -1,18 +1,30 @@
 ports = []
 [languages.cpp]
 language = "cpp"
-[languages.cpp.run."9.成员函数做友元.cpp"]
-name = "9.成员函数做友元.cpp"
-path = "/workspace/study-c/12.类和对象/9.成员函数做友元.cpp"
-
-[languages.cpp.run."8.类做友元.cpp"]
-name = "8.类做友元.cpp"
-path = "/workspace/study-c/12.类和对象/8.类做友元.cpp"
+[languages.cpp.run."03.二进制写文件.cpp"]
+name = "03.二进制写文件.cpp"
+path = "/workspace/study-c/014.file/03.二进制写文件.cpp"
 
 [languages.cpp.run."7.友元.cpp"]
 name = "7.友元.cpp"
 path = "/workspace/study-c/12.类和对象/7.友元.cpp"
 
+[languages.cpp.run."8.类做友元.cpp"]
+name = "8.类做友元.cpp"
+path = "/workspace/study-c/12.类和对象/8.类做友元.cpp"
+
 [languages.cpp.run."10.运算符重载.cpp"]
 name = "10.运算符重载.cpp"
 path = "/workspace/study-c/12.类和对象/10.运算符重载.cpp"
+
+[languages.cpp.run."04.二进制读文件.cpp"]
+name = "04.二进制读文件.cpp"
+path = "/workspace/study-c/014.file/04.二进制读文件.cpp"
+
+[languages.cpp.run."main.cpp"]
+name = "main.cpp"
+path = "/workspace/study-c/15.职工管理系统/main.cpp"
+
+[languages.cpp.run."9.成员函数做友元.cpp"]
+name = "9.成员函数做友元.cpp"
+path = "/workspace/study-c/12.类和对象/9.成员函数做友元.cpp"
