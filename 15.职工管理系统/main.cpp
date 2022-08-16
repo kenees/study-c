@@ -1,10 +1,82 @@
 #include <iostream>
+#include <fstream>
 using namespace std;
 
-class Termina {
+class Person
+{
 public:
-  void showMenu() {
-    // system("clear");
+  int id;
+  string name;
+  int post; // 1: 普通员工， 2： 经理 3：老板
+};
+
+class PersonBooks
+{
+public:
+ 
+
+  void showPersonList()
+  {
+    ifstream ifs;
+    ifs.open("./sql.text", ios::in);
+
+    if (!ifs.is_open())
+    {
+      cout << "文件打开失败" << endl;
+      return;
+    }
+
+    cout << "序号 \t" << "ID \t" << "姓名 \t" << "职位 \t" << endl;
+
+    Person p;
+    //  while(true) {
+    //   ifs.read((char *)&p, sizeof(Person)*line);
+    //   if (p )
+    //   cout << p.id << "\t" << p.id << "\t" << p.name << "\t" << p.post << endl;
+    //   line ++;
+    //  }
+
+    // while (getline(ifs, buf))
+    // {
+    //   /* code */
+    //   line ++;
+    //   // cout << ""
+    //   // cout << buf << endl;
+    // }
+  }
+
+  void appendPerson(Person &p)
+  {
+    fstream ofs;
+    ofs.open("./sql.text", ios::out | ios::binary | ios::app);
+
+    if (!ofs.is_open())
+    {
+      cout << "文件打开失败" << endl;
+    }
+    else
+    {
+      Person personList[100];
+      ofs.read((char *)&personList, sizeof(Person[100]));
+      personList.push(p);
+
+      ofs.write((const char *)&personList, sizeof(Person[100]));
+      
+      ofs.close();
+    }
+  }
+
+  void deletePerson()
+  {
+  }
+};
+
+class Termina
+{
+public:
+  void showMenu()
+  {
+    system("clear");
     cout << "***********************" << endl;
     cout << "*** 1. 增加职工信息 ***" << endl;
     cout << "*** 2. 显示职工信息 ***" << endl;
@@ -17,21 +89,40 @@ public:
   }
 
   void quit() { cout << "欢迎下次继续使用" << endl; }
+
+  void addPerson(PersonBooks &pb)
+  {
+    system("clear");
+    Person p;
+    cout << "请输入ID： " << endl;
+    cin >> p.id;
+    cout << "请输入用户名： " << endl;
+    cin >> p.name;
+    cout << "请输入用户职位(1:普通员工 2:经理 3:老板): " << endl; // 1: 普通员工， 2： 经理 3：老板
+    cin >> p.post;
+
+    pb.appendPerson(p);
+  }
 };
 
-void start() {
+void start()
+{
   int select = 0;
   Termina t;
-  while (true) {
+  PersonBooks pb;
+
+  while (true)
+  {
     t.showMenu();
     cout << "请选择操作： " << endl;
     cin >> select;
-    switch (select) {
+    switch (select)
+    {
     case 1:
-      cout << "11" << endl;
+      t.addPerson(pb);
       break;
     case 2:
-      cout << "1122" << endl;
+      pb.showPersonList();
       break;
     case 3:
       cout << "113" << endl;
@@ -57,7 +148,8 @@ void start() {
   }
 }
 
-int main() {
+int main()
+{
   start();
   return 0;
 }
