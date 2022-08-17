@@ -14,30 +14,36 @@ public:
 class PersonBooks
 {
 public:
- 
-  Person books[100];
+  // Person books[100];
   int len = 0;
+};
 
-  PersonBooks() {
-    cout << "begin read sql" << endl;
+class FileOperation
+{
+public:
+  FileOperation()
+  {
+    cout << "begin read sql " << sizeof(PersonBooks) << endl;
     ifstream ifs;
     ifs.open("./sql.txt", ios::in | ios::binary);
 
-    if (!ifs.is_open()) {
+    if (!ifs.is_open())
+    {
       // 打开文件失败
       cout << "文件打开失败" << endl;
       return;
     }
 
-    ifs.read((char *)&books, sizeof(books));
+    PersonBooks pbs;
+    ifs.read((char *)&pbs, sizeof(PersonBooks));
 
-    cout << books << endl;
+    cout << pbs.len << endl;
   }
 
   void showPersonList()
   {
     ifstream ifs;
-    ifs.open("./sql.text", ios::in);
+    ifs.open("./sql.txt", ios::in);
 
     if (!ifs.is_open())
     {
@@ -45,29 +51,23 @@ public:
       return;
     }
 
-    cout << "序号 \t" << "ID \t" << "姓名 \t" << "职位 \t" << endl;
+    cout << "序号 \t"
+         << "ID \t"
+         << "姓名 \t"
+         << "职位 \t" << endl;
 
-    Person p;
-    //  while(true) {
-    //   ifs.read((char *)&p, sizeof(Person)*line);
-    //   if (p )
-    //   cout << p.id << "\t" << p.id << "\t" << p.name << "\t" << p.post << endl;
-    //   line ++;
-    //  }
+    PersonBooks pbs;
+    ifs.seekg(0, ios::beg);
+    ifs.read((char *)&pbs, sizeof(PersonBooks));
 
-    // while (getline(ifs, buf))
-    // {
-    //   /* code */
-    //   line ++;
-    //   // cout << ""
-    //   // cout << buf << endl;
-    // }
+    cout << "pbs" << pbs.len << endl;
+    ifs.close();
   }
 
   void appendPerson(Person &p)
   {
     fstream ofs;
-    ofs.open("./sql.text", ios::out | ios::binary | ios::app);
+    ofs.open("./sql.txt", ios::out | ios::in | ios::binary | ios::app);
 
     if (!ofs.is_open())
     {
@@ -76,12 +76,20 @@ public:
     }
     else
     {
-      // Person personList[100];
-      // ofs.read((char *)&personList, sizeof(Person[100]));
-      // personList.push(p);
+      PersonBooks pbs2;
+      ofs.read((char *)&pbs2, sizeof(PersonBooks));
 
-      // ofs.write((const char *)&personList, sizeof(Person[100]));
-      
+      cout << "pbs" << pbs2.len << endl;
+
+
+      // 手动添加
+      PersonBooks pbs1 = {
+        pbs2.len+1,
+      };
+
+      // pbs.books[pbs.len] = p;
+      ofs.seekp(0, ios::beg);
+      ofs.write((const char *)&pbs1, sizeof(PersonBooks));
       ofs.close();
     }
   }
@@ -110,7 +118,7 @@ public:
 
   void quit() { cout << "欢迎下次继续使用" << endl; }
 
-  void addPerson(PersonBooks &pb)
+  void addPerson(FileOperation &fo)
   {
     system("clear");
     Person p;
@@ -121,7 +129,7 @@ public:
     cout << "请输入用户职位(1:普通员工 2:经理 3:老板): " << endl; // 1: 普通员工， 2： 经理 3：老板
     cin >> p.post;
 
-    pb.appendPerson(p);
+    fo.appendPerson(p);
   }
 };
 
@@ -129,7 +137,7 @@ void start()
 {
   int select = 0;
   Termina t;
-  PersonBooks pb;
+  FileOperation fo;
 
   while (true)
   {
@@ -139,10 +147,10 @@ void start()
     switch (select)
     {
     case 1:
-      t.addPerson(pb);
+      t.addPerson(fo);
       break;
     case 2:
-      pb.showPersonList();
+      fo.showPersonList();
       break;
     case 3:
       cout << "113" << endl;
