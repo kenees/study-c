@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -14,6 +15,24 @@ class PersonBooks
 {
 public:
  
+  Person books[100];
+  int len = 0;
+
+  PersonBooks() {
+    cout << "begin read sql" << endl;
+    ifstream ifs;
+    ifs.open("./sql.txt", ios::in | ios::binary);
+
+    if (!ifs.is_open()) {
+      // 打开文件失败
+      cout << "文件打开失败" << endl;
+      return;
+    }
+
+    ifs.read((char *)&books, sizeof(books));
+
+    cout << books << endl;
+  }
 
   void showPersonList()
   {
@@ -53,14 +72,15 @@ public:
     if (!ofs.is_open())
     {
       cout << "文件打开失败" << endl;
+      system("pause");
     }
     else
     {
-      Person personList[100];
-      ofs.read((char *)&personList, sizeof(Person[100]));
-      personList.push(p);
+      // Person personList[100];
+      // ofs.read((char *)&personList, sizeof(Person[100]));
+      // personList.push(p);
 
-      ofs.write((const char *)&personList, sizeof(Person[100]));
+      // ofs.write((const char *)&personList, sizeof(Person[100]));
       
       ofs.close();
     }
@@ -76,7 +96,7 @@ class Termina
 public:
   void showMenu()
   {
-    system("clear");
+    // system("clear");
     cout << "***********************" << endl;
     cout << "*** 1. 增加职工信息 ***" << endl;
     cout << "*** 2. 显示职工信息 ***" << endl;
