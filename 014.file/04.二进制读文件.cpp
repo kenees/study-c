@@ -2,30 +2,47 @@
 #include <fstream>
 using namespace std;
 
-class Person {
-    public:
-        char m_name[64];
-        int age;
+class Person
+{
+public:
+    char m_name[64];
+    int age;
 };
 
-void test() {
-    // 2. 创建流对象
-    ifstream ifs("./014.file/person.txt", ios::in | ios::binary);
+class PersonList
+{
+public:
+    Person list[100];
+    int len;
+};
 
-    if (!ifs.is_open()) {
+void test()
+{
+    // 2. 创建流对象
+    ifstream ifs("./person.txt", ios::in | ios::binary);
+
+    if (!ifs.is_open())
+    {
         cout << "打开失败" << endl;
         return;
     }
 
-    Person p;
-    ifs.read((char *)&p, sizeof(Person));
-    
-    cout << p.age << p.m_name << endl;
-    
+    PersonList pl;
+
+    ifs.read((char *)&pl, sizeof(PersonList));
+
+    cout << pl.len << endl;
+
+    for (int i = 0; i < pl.len; i++)
+    {
+        cout << pl.list[i].m_name << " " << pl.list[i].age << endl;
+    }
+
     ifs.close();
 };
 
-int main() {
+int main()
+{
     test();
     return 0;
 }

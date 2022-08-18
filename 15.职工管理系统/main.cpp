@@ -1,8 +1,13 @@
-#include <cstddef>
+#include <stdio.h>
 #include <iostream>
 #include <fstream>
+
+int getchar(void);
+
 using namespace std;
 
+class PersonBooks;
+void saveData(PersonBooks &pb);
 class Person
 {
 public:
@@ -14,16 +19,127 @@ public:
 class PersonBooks
 {
 public:
-  // Person books[100];
+  Person books[100];
   int len = 0;
+
+  void showPerson(Person &p)
+  {
+    cout << "序号: " << p.id << "\t\t"
+         << "姓名: " << p.name << "\t\t"
+         << "职位: " << p.post << "\t\t" << endl;
+  }
+
+  void showPersonList()
+  {
+    for (int i = 0; i < this->len; i++)
+    {
+      this->showPerson(this->books[i]);
+    }
+  }
+
+  int getByName(string name)
+  {
+    int i = 0;
+    while (i < len)
+    {
+      if (this->books[i].name == name)
+      {
+        return i;
+      };
+      i++;
+    }
+    return -1;
+  };
+
+  void saveToFile()
+  {
+    ofstream ofs("./sql.txt", ios::out | ios::binary);
+    if (!ofs.is_open())
+    {
+      // 打开文件失败
+      cout << "文件打开失败" << endl;
+    }
+    else
+    {
+      ofs.write((const char *)this, sizeof(PersonBooks));
+      ofs.close();
+    }
+  };
+
+  void appendPerson(Person &p)
+  {
+    if (len >= 100)
+    {
+      cout << "存储数据超过上限,请删除部分联系人后添加" << endl;
+      return;
+    }
+    books[len] = p;
+    len++;
+    this->saveToFile();
+  }
+
+  void deletePerson(int n)
+  {
+    this->showPerson(this->books[n]);
+
+    for (int i = n; i < len; i++)
+    {
+      this->books[i] = this->books[i + 1];
+    }
+    this->len--;
+    this->saveToFile();
+    cout << "删除成功" << endl;
+  }
+
+  void editPserson(Person &p, int n)
+  {
+    this->books[n] = p;
+    this->saveToFile();
+    cout << "编辑成功" << endl;
+  };
+
+  void sortById(int mode)
+  {
+    if (mode == 1) // 升
+    {
+      for (int i = 0; i < len; i++)
+      {
+        for (int j = i + 1; j < len; j++)
+        {
+          if (this->books[i].id > this->books[j].id)
+          { // 依次比较, 找到最xiao的放到第i位
+            Person max = this->books[i];
+            this->books[i] = this->books[j];
+            this->books[j] = max;
+          }
+        }
+      }
+    }
+    else
+    {
+      for (int i = 0; i < len; i++)
+      {
+        for (int j = i + 1; j < len; j++)
+        {
+          if (this->books[i].id < this->books[j].id)
+          { // 依次比较, 找到最小的放到第i位
+            Person min = this->books[i];
+            this->books[i] = this->books[j];
+            this->books[j] = min;
+          }
+        }
+      }
+    }
+
+    this->showPersonList();
+  }
 };
 
-class FileOperation
+class Termina
 {
 public:
-  FileOperation()
+  Termina(PersonBooks &books)
   {
-    cout << "begin read sql " << sizeof(PersonBooks) << endl;
     ifstream ifs;
     ifs.open("./sql.txt", ios::in | ios::binary);
 
@@ -33,78 +149,11 @@ public:
       cout << "文件打开失败" << endl;
       return;
     }
-
-    PersonBooks pbs;
-    ifs.read((char *)&pbs, sizeof(PersonBooks));
-
-    cout << pbs.len << endl;
+    ifs.read((char *)&books, sizeof(books));
   }
 
-  void showPersonList()
-  {
-    ifstream ifs;
-    ifs.open("./sql.txt", ios::in);
-
-    if (!ifs.is_open())
-    {
-      cout << "文件打开失败" << endl;
-      return;
-    }
-
-    cout << "序号 \t"
-         << "ID \t"
-         << "姓名 \t"
-         << "职位 \t" << endl;
-
-    PersonBooks pbs;
-    ifs.seekg(0, ios::beg);
-    ifs.read((char *)&pbs, sizeof(PersonBooks));
-
-    cout << "pbs" << pbs.len << endl;
-    ifs.close();
-  }
-
-  void appendPerson(Person &p)
-  {
-    fstream ofs;
-    ofs.open("./sql.txt", ios::out | ios::in | ios::binary | ios::app);
-
-    if (!ofs.is_open())
-    {
-      cout << "文件打开失败" << endl;
-      system("pause");
-    }
-    else
-    {
-      PersonBooks pbs2;
-      ofs.read((char *)&pbs2, sizeof(PersonBooks));
-
-      cout << "pbs" << pbs2.len << endl;
-
-
-      // 手动添加
-      PersonBooks pbs1 = {
-        pbs2.len+1,
-      };
-
-      // pbs.books[pbs.len] = p;
-      ofs.seekp(0, ios::beg);
-      ofs.write((const char *)&pbs1, sizeof(PersonBooks));
-      ofs.close();
-    }
-  }
-
-  void deletePerson()
-  {
-  }
-};
-
-class Termina
-{
-public:
   void showMenu()
   {
-    // system("clear");
     cout << "***********************" << endl;
     cout << "*** 1. 增加职工信息 ***" << endl;
     cout << "*** 2. 显示职工信息 ***" << endl;
@@ -118,9 +167,8 @@ public:
 
   void quit() { cout << "欢迎下次继续使用" << endl; }
 
-  void addPerson(FileOperation &fo)
+  void addPerson(PersonBooks &books)
   {
-    system("clear");
     Person p;
     cout << "请输入ID： " << endl;
     cin >> p.id;
@@ -128,41 +176,115 @@ public:
     cin >> p.name;
     cout << "请输入用户职位(1:普通员工 2:经理 3:老板): " << endl; // 1: 普通员工， 2： 经理 3：老板
     cin >> p.post;
+    books.appendPerson(p);
+  }
 
-    fo.appendPerson(p);
+  void deletePerson(PersonBooks &books)
+  {
+
+    string name;
+    cout << "请输入需要删除的用户名： " << endl;
+    cin >> name;
+    int i = books.getByName(name);
+    if (i == -1)
+    {
+      cout << "未查询到该用户" << endl;
+    }
+    else
+    {
+      books.deletePerson(i);
+    }
+  }
+
+  void editPerson(PersonBooks &books)
+  {
+    string name;
+    cout << "请输入需要编辑的用户名： " << endl;
+    cin >> name;
+
+    int i = books.getByName(name);
+    if (i == -1)
+    {
+      cout << "未查询到该用户" << endl;
+    }
+    else
+    {
+      books.showPerson(books.books[i]);
+      Person np;
+      cout << "请输入新序号: ";
+      cin >> np.id;
+      cout << "请输入新名称: ";
+      cin >> np.name;
+      cout << "请输入新用户职位(1:普通员工 2:经理 3:老板):";
+      cin >> np.post;
+      books.editPserson(np, i);
+    }
+  }
+
+  void findByName(PersonBooks &books)
+  {
+    string name;
+    cout << "请输入需要查询的用户名： " << endl;
+    cin >> name;
+
+    int i = books.getByName(name);
+    if (i == -1)
+    {
+      cout << "未查询到该用户" << endl;
+    }
+    else
+    {
+      books.showPerson(books.books[i]);
+    }
+  }
+
+  void sortById(PersonBooks &books)
+  {
+    int mode = 0;
+    while (true)
+    {
+      cout << "请选择排序方式(0: 降序, 1: 升序): ";
+      cin >> mode;
+      if (mode == 0 || mode == 1)
+      {
+        books.sortById(mode);
+        break;
+      }
+    }
   }
 };
 
 void start()
 {
   int select = 0;
-  Termina t;
-  FileOperation fo;
+  PersonBooks books;
+  Termina t(books);
 
   while (true)
   {
     t.showMenu();
     cout << "请选择操作： " << endl;
     cin >> select;
+    system("clear");
     switch (select)
     {
     case 1:
-      t.addPerson(fo);
+      t.addPerson(books);
       break;
     case 2:
-      fo.showPersonList();
+      books.showPersonList();
       break;
     case 3:
-      cout << "113" << endl;
+      t.deletePerson(books);
       break;
     case 4:
-      cout << "114" << endl;
+      t.editPerson(books);
       break;
     case 5:
-      cout << "115" << endl;
+      t.findByName(books);
       break;
     case 6:
-      cout << "116" << endl;
+      t.sortById(books);
       break;
     case 7:
       cout << "117" << endl;
