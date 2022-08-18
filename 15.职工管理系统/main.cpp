@@ -6,8 +6,6 @@ int getchar(void);
 
 using namespace std;
 
-class PersonBooks;
-void saveData(PersonBooks &pb);
 class Person
 {
 public:
@@ -133,6 +131,11 @@ public:
 
     this->showPersonList();
   }
+
+  void clearn()
+  {
+    len = 0;
+  }
 };
 
 class Termina
@@ -249,6 +252,26 @@ public:
       {
         books.sortById(mode);
         break;
+      }
+    }
+  }
+
+  void clearn(PersonBooks &books)
+  {
+    cout << "确认清空吗？" << endl;
+    cout << "1: 是， 2: 否" << endl;
+    int n;
+    while (true)
+    {
+      cin >> n;
+      if (n == 1)
+      {
+
+        break;
+      }
+      else if (n == 2)
+      {
+        return;
       }
     }
   }
