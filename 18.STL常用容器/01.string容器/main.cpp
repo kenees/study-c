@@ -3,6 +3,7 @@ using namespace std;
 
 /**
  *  c++风格的字符串本质上是一个类
+ * 手机连接
  *
  *  string  和 char* 的区别
  *
