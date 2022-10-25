@@ -23,6 +23,7 @@ using namespace std;
  *      string(int n, char c);      //使用n个支付c初始化
  */
 
+// string 的构造方法
 void test01()
 {
     string s1;

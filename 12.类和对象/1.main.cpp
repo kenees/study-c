@@ -25,6 +25,8 @@ public:
   int c_r;
   Point center;
 
+// : 后面是进行赋值操作，  
+// 定义变量并赋值有两种方式： 1. int a = 10;  2. int a(10);    // 括号赋值的方式只能在初始化中， 不能定义后赋值
   Circle(int r, int x, int y): c_r(r), center(x, y) {
     cout << "circle. init" << endl;
   };
